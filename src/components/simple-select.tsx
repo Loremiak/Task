@@ -3,9 +3,9 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@m
 type SimpleSelectTypes = {
 	id: string;
 	label: string;
-	menuItem: (string | number)[];
-	onChange: (event: SelectChangeEvent<string | number>) => void;
-	selectedValue: string | number;
+	menuItem: string[];
+	onChange: (event: SelectChangeEvent<string>) => void;
+	selectedValue: string;
 };
 
 const SimpleSelect = ({ id, label, menuItem, onChange, selectedValue }: SimpleSelectTypes) => {
@@ -13,7 +13,7 @@ const SimpleSelect = ({ id, label, menuItem, onChange, selectedValue }: SimpleSe
 		<FormControl fullWidth>
 			<InputLabel id={id}>{label}</InputLabel>
 			<Select labelId={id} id='demo-simple-select' value={selectedValue} label={label} onChange={onChange}>
-				{menuItem.map((value: string | number) => (
+				{menuItem.map((value: string) => (
 					<MenuItem key={value} value={value}>
 						{value}
 					</MenuItem>
