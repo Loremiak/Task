@@ -1,158 +1,11 @@
-import { SelectChangeEvent, Box, CircularProgress } from '@mui/material';
+import { SelectChangeEvent, Box } from '@mui/material';
 import { useState, ChangeEvent } from 'react';
 import SimpleSelect from '../components/simple-select';
 import SimpleTable from '../components/simple-table';
 import useGetTags from '../services/api';
 import NumberInput from '../components/number-input';
 import Pagination from '../components/pagination';
-
-const mockedData = {
-	items: [
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 147,
-			name: '.a',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 162,
-			name: '.app',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 64,
-			name: '.aspxauth',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 284,
-			name: '.class-file',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 6,
-			name: '.cod-file',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 3,
-			name: '.csproj.in',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 2,
-			name: '.ctf',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 161,
-			name: '.d.ts',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 4,
-			name: '.data',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 154,
-			name: '.doc',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 64,
-			name: '.emf',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 188,
-			name: '.env',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 39,
-			name: '.git-folder',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 6,
-			name: '.git-info-grafts',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 2,
-			name: '.gz',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 9,
-			name: '.hgtags',
-		},
-		{
-			has_synonyms: true,
-			is_moderator_only: false,
-			is_required: false,
-			count: 73122,
-			name: '.htaccess',
-		},
-		{
-			has_synonyms: true,
-			is_moderator_only: false,
-			is_required: false,
-			count: 532,
-			name: '.htpasswd',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 1,
-			name: '.http-files',
-		},
-		{
-			has_synonyms: false,
-			is_moderator_only: false,
-			is_required: false,
-			count: 31,
-			name: '.ico',
-		},
-	],
-	has_more: true,
-	quota_max: 10000,
-	quota_remaining: 9698,
-};
+import ErrorAlert from '../components/error-alert';
 
 const TableView = () => {
 	const [queryParams, setQueryParams] = useState({
@@ -163,23 +16,7 @@ const TableView = () => {
 	});
 	const [textFieldError, setTextFieldError] = useState('');
 
-	const { data, isLoading } = useGetTags(queryParams);
-
-	const handleOrderChange = (event: SelectChangeEvent<string>) => {
-		setQueryParams(prevState => ({
-			...prevState,
-			order: event.target.value,
-			page: '1',
-		}));
-	};
-
-	const handleSortChange = (event: SelectChangeEvent<string>) => {
-		setQueryParams(prevState => ({
-			...prevState,
-			sort: event.target.value,
-			page: '1',
-		}));
-	};
+	const { data, isLoading, isError } = useGetTags(queryParams);
 
 	const handlePageChange = (_: ChangeEvent<unknown>, value: number) => {
 		setQueryParams(prevState => ({
@@ -188,28 +25,35 @@ const TableView = () => {
 		}));
 	};
 
-	console.log(mockedData);
-
-	// if (isError) {
-	// 	return <ErrorAlert />;
-	// }
+	const handleChange = (key: 'sort' | 'order', event: SelectChangeEvent<string>) => {
+		setQueryParams(prevState => ({
+			...prevState,
+			[key]: event.target.value,
+			page: '1',
+		}));
+	};
 
 	const handlePageSizeChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const val = event.target.value;
-		if (val.match(/[^0-9]/)) {
-			return event.preventDefault();
+		let value = event.target.value;
+
+		value = value.replace(/[^0-9]/g, '');
+
+		let inputValue = parseInt(value, 10);
+
+		if (Number.isNaN(inputValue)) {
+			setTextFieldError('Wartość musi być liczbą');
+		} else {
+			setTextFieldError('');
 		}
 
-		let inputValue = parseInt(val);
-
-		if (inputValue < 1 || Number.isNaN(inputValue)) {
+		if (inputValue < 1) {
 			setTextFieldError('Minimalna wartość wynosi 1');
 			inputValue = 1;
-		}
-		if (inputValue > 30) {
+		} else if (inputValue > 30) {
 			setTextFieldError('Maksymalna wartość wynosi 30');
 			inputValue = 30;
 		}
+
 		if (event.target.validity.valid) {
 			setTextFieldError('');
 		}
@@ -220,21 +64,23 @@ const TableView = () => {
 		}));
 	};
 
-	console.log(queryParams);
+	if (isError) {
+		return <ErrorAlert errorText='Coś poszło nie tak, spróbuj odświeżyć stronę.' />;
+	}
 
 	return (
-		<div>
+		<>
 			<Box sx={{ display: 'flex', gap: '10px', margin: '1rem 0' }}>
 				<SimpleSelect
 					label='Kolejność'
 					menuItem={['asc', 'desc']}
-					onChange={handleOrderChange}
+					onChange={event => handleChange('order', event)}
 					selectedValue={queryParams.order}
 				/>
 				<SimpleSelect
 					label='Sortuj'
 					menuItem={['name', 'popular', 'activity']}
-					onChange={handleSortChange}
+					onChange={event => handleChange('sort', event)}
 					selectedValue={queryParams.sort}
 				/>
 				<NumberInput
@@ -243,19 +89,16 @@ const TableView = () => {
 					defaultValue={queryParams.pageSize}
 					helperText={!!textFieldError && textFieldError}
 					error={!!textFieldError}
+					onKeyDown={event => ['e', 'E', '+', '-', ',', '.'].includes(event.key) && event.preventDefault()}
 				/>
 			</Box>
-			{isLoading ? (
-				<CircularProgress size='6rem' />
-			) : (
-				<SimpleTable tableCells={['Name', 'Count']} dataList={data ? data.items : mockedData.items} />
-			)}
+			<SimpleTable isLoading={isLoading} tableCells={['Name', 'Count']} dataList={data && data.items} />
 			<Pagination
-				count={data ? data.quota_remaining : mockedData.quota_remaining}
+				count={data && data.quota_remaining <= 25 ? data.quota_remaining : 25}
 				page={+queryParams.page}
 				onChange={handlePageChange}
 			/>
-		</div>
+		</>
 	);
 };
 

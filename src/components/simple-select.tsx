@@ -10,8 +10,26 @@ type SimpleSelectTypes = {
 const SimpleSelect = ({ label, menuItem, onChange, selectedValue }: SimpleSelectTypes) => {
 	return (
 		<FormControl fullWidth>
-			<InputLabel id={label}>{label}</InputLabel>
-			<Select labelId={label} id={label} value={selectedValue} label={label} onChange={onChange}>
+			<InputLabel
+				sx={{
+					'&.Mui-focused': {
+						color: '#5e0087',
+					},
+				}}
+				id={label}>
+				{label}
+			</InputLabel>
+			<Select
+				sx={{
+					'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+						borderColor: '#EE82EE',
+					},
+				}}
+				labelId={label}
+				id={label}
+				value={selectedValue}
+				label={label}
+				onChange={onChange}>
 				{menuItem.map((value: string) => (
 					<MenuItem key={value} value={value}>
 						{value}

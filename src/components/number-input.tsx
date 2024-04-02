@@ -1,17 +1,26 @@
 import { TextField } from '@mui/material';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, KeyboardEventHandler } from 'react';
 
 type NumberInputType = {
 	label: string;
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	defaultValue: string;
 	helperText: string | false;
+	onKeyDown: KeyboardEventHandler<HTMLDivElement> | undefined;
 	error: boolean;
 };
 
-const NumberInput = ({ label, onChange, defaultValue, helperText, error }: NumberInputType) => {
+const NumberInput = ({ label, onChange, defaultValue, helperText, onKeyDown, error }: NumberInputType) => {
 	return (
 		<TextField
+			sx={{
+				'& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+					borderColor: '#EE82EE',
+				},
+				'& .MuiInputLabel-root.Mui-focused': {
+					color: '#5e0087',
+				},
+			}}
 			id={label}
 			label={label}
 			variant='outlined'
@@ -23,6 +32,7 @@ const NumberInput = ({ label, onChange, defaultValue, helperText, error }: Numbe
 			size='medium'
 			fullWidth
 			required
+			onKeyDown={onKeyDown}
 		/>
 	);
 };

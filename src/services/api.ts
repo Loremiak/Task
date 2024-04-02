@@ -7,7 +7,7 @@ type TagsType = {
 	sort: string;
 };
 
-const BASE_URL = 'https://aaapi.stackexchange.com/2.3/tags';
+const BASE_URL = 'https://api.stackexchange.com/2.3/tags';
 
 const useGetTags = ({ page, pageSize, order, sort }: TagsType) => {
 	const tags = useQuery({

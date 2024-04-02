@@ -1,9 +1,13 @@
 import { Alert } from '@mui/material';
 
-const ErrorAlert = () => {
+type ErrorAlertType = {
+	errorText: string;
+};
+
+const ErrorAlert = ({ errorText }: ErrorAlertType) => {
 	return (
 		<Alert variant='filled' severity='error'>
-			Coś poszło nie tak, spróbuj odświeżyć stronę.
+			{errorText}
 		</Alert>
 	);
 };

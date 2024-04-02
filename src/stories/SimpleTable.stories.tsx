@@ -12,6 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
+		isLoading: false,
 		tableCells: ['Name', 'Count'],
 		dataList: [
 			{
@@ -32,6 +33,7 @@ export const Default: Story = {
 
 export const WithMoreData: Story = {
 	args: {
+		isLoading: false,
 		tableCells: ['Name', 'Count'],
 		dataList: [
 			{
@@ -184,6 +186,7 @@ export const WithMoreData: Story = {
 
 export const WithMoreCells: Story = {
 	args: {
+		isLoading: false,
 		tableCells: ['Id', 'Name', 'Count', 'Is moderator only', 'Is required', 'Has synonyms'],
 		dataList: [
 			{
@@ -199,5 +202,13 @@ export const WithMoreCells: Story = {
 				count: 3123123,
 			},
 		],
+	},
+};
+
+export const WithLoading: Story = {
+	args: {
+		isLoading: true,
+		tableCells: ['Name', 'Count'],
+		dataList: [],
 	},
 };
