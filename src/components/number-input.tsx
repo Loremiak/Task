@@ -6,7 +6,7 @@ type NumberInputType = {
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 	defaultValue: string;
 	helperText: string | false;
-	onKeyDown: KeyboardEventHandler<HTMLDivElement> | undefined;
+	onKeyDown?: KeyboardEventHandler<HTMLDivElement>;
 	error: boolean;
 };
 

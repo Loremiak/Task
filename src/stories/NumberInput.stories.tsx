@@ -39,3 +39,13 @@ export const MinError: Story = {
 		error: true,
 	},
 };
+
+export const NumberRequired: Story = {
+	args: {
+		label: 'NumberInput',
+		onChange: () => {},
+		defaultValue: 'test',
+		helperText: 'Wartość musi być liczbą',
+		error: true,
+	},
+};

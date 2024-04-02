@@ -1,5 +1,5 @@
 import { SelectChangeEvent, Box } from '@mui/material';
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useCallback } from 'react';
 import SimpleSelect from '../components/simple-select';
 import SimpleTable from '../components/simple-table';
 import useGetTags from '../services/api';
@@ -18,22 +18,22 @@ const TableView = () => {
 
 	const { data, isLoading, isError } = useGetTags(queryParams);
 
-	const handlePageChange = (_: ChangeEvent<unknown>, value: number) => {
+	const handlePageChange = useCallback((_: ChangeEvent<unknown>, value: number) => {
 		setQueryParams(prevState => ({
 			...prevState,
 			page: String(value),
 		}));
-	};
+	}, []);
 
-	const handleChange = (key: 'sort' | 'order', event: SelectChangeEvent<string>) => {
+	const handleChange = useCallback((key: 'sort' | 'order', event: SelectChangeEvent<string>) => {
 		setQueryParams(prevState => ({
 			...prevState,
 			[key]: event.target.value,
 			page: '1',
 		}));
-	};
+	}, []);
 
-	const handlePageSizeChange = (event: ChangeEvent<HTMLInputElement>) => {
+	const handlePageSizeChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
 		let value = event.target.value;
 
 		value = value.replace(/[^0-9]/g, '');
@@ -41,6 +41,7 @@ const TableView = () => {
 		let inputValue = parseInt(value, 10);
 
 		if (Number.isNaN(inputValue)) {
+			inputValue = 1;
 			setTextFieldError('Wartość musi być liczbą');
 		} else {
 			setTextFieldError('');
@@ -62,7 +63,7 @@ const TableView = () => {
 			...prevState,
 			pageSize: String(inputValue),
 		}));
-	};
+	}, []);
 
 	if (isError) {
 		return <ErrorAlert errorText='Coś poszło nie tak, spróbuj odświeżyć stronę.' />;
