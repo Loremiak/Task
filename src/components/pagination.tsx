@@ -9,7 +9,7 @@ type PaginationType = {
 
 const Pagination = ({ count, page, onChange }: PaginationType) => {
 	return (
-		<Stack sx={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }} spacing={2} test-id='pagination-component'>
+		<Stack sx={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }} spacing={2}>
 			<MUIPagination
 				color='secondary'
 				count={count}

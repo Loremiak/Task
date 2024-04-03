@@ -41,8 +41,8 @@ const TableView = () => {
 		let inputValue = parseInt(value, 10);
 
 		if (Number.isNaN(inputValue)) {
-			inputValue = 1;
 			setTextFieldError('Wartość musi być liczbą');
+			inputValue = 1;
 		} else {
 			setTextFieldError('');
 		}

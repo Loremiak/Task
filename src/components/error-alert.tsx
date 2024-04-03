@@ -1,10 +1,7 @@
 import { Alert } from '@mui/material';
+import { FC } from 'react';
 
-type ErrorAlertType = {
-	errorText: string;
-};
-
-const ErrorAlert = ({ errorText }: ErrorAlertType) => {
+const ErrorAlert: FC<{ errorText: string }> = ({ errorText }) => {
 	return (
 		<Alert variant='filled' severity='error'>
 			{errorText}

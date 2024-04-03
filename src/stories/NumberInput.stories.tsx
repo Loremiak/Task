@@ -44,7 +44,7 @@ export const NumberRequired: Story = {
 	args: {
 		label: 'NumberInput',
 		onChange: () => {},
-		defaultValue: 'test',
+		defaultValue: 'test - + , .',
 		helperText: 'Wartość musi być liczbą',
 		error: true,
 	},

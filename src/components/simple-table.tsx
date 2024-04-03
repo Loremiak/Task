@@ -22,7 +22,7 @@ type SimpleTableType = {
 const SimpleTable = ({ tableCells, dataList, isLoading }: SimpleTableType) => {
 	return (
 		<TableContainer component={Card}>
-			<Table sx={{ minWidth: 650, minHeight: '300px' }} aria-label='simple table'>
+			<Table sx={{ minWidth: 650, minHeight: `${isLoading ? '300px' : '0'}` }} aria-label='simple table'>
 				<TableHead>
 					<TableRow>
 						{tableCells.map(tableCell => (
